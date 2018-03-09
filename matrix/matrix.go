@@ -20,6 +20,28 @@ func MakeIdentity(matrix [][]float64) {
 	}
 }
 
+// MakeBezier returns a 4x4 matrix that can be used to generate the coefficients
+// for a Bezier curve.
+func MakeBezier() [][]float64 {
+	return [][]float64{
+		{-1, 3, -3, 1},
+		{3, -6, 3, 0},
+		{-3, 3, 0, 0},
+		{1, 0, 0, 0},
+	}
+}
+
+// MakeHermite returns a 4x4 matrix that can be used to generate the
+// coefficients for a Hermite curve.
+func MakeHermite [][]float64 {
+	return [][]float64{
+		{2, -2, 1, 1},
+		{-3, 3, -2, -1},
+		{0, 0, 1, 0},
+		{1, 0, 0, 0},
+	}
+}
+
 // MultiplyMatrices multiples two matrices and stores it in the second matrix
 // given.
 func MultiplyMatrices(m1Ptr, m2Ptr *[][]float64) {
