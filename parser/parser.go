@@ -84,6 +84,8 @@ func ParseFile(filename string,
 			display.WriteScreenToExtension(screen, params)
 		} else if line == "line" {
 			draw.AddEdge(edges, FloatParams(params)...)
+		} else if line == "circle" {
+			draw.AddCircle(edges, FloatParams(params)...)
 		} else {
 			var stepTransform [][]float64
 

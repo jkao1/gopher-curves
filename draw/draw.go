@@ -3,8 +3,10 @@
 package draw
 
 import (
-	"../display"
-	"../matrix"
+	"github.com/jkao1/spring-curves/display"
+	"github.com/jkao1/spring-curves/matrix"
+
+	"math"
 )
 
 var DefaultDrawColor []int = []int{0, 0, 0}
@@ -139,4 +141,16 @@ func float64ToInt(f float64) int {
 		return int(f)
 	}
 	return int(f + 1)
+}
+
+// AddCircle adds the circle at (x, c, z) with radius r to points.
+func AddCircle(m [][]float64, x, y, z, r float64, step int) {
+	for t = 0; t < step; t++ {
+		n := float64(t) / step
+		AddPoint(
+			float64ToInt(x + math.Cos(2*math.Pi*n)),
+			float64ToInt(y + math.Sin(2*math.Pi*n)),
+			0,
+		)
+	}
 }
