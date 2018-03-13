@@ -23,23 +23,35 @@ func MakeIdentity(matrix [][]float64) {
 // MakeBezier returns a 4x4 matrix that can be used to generate the coefficients
 // for a Bezier curve.
 func MakeBezier() [][]float64 {
-	return [][]float64{
-		{-1, 3, -3, 1},
-		{3, -6, 3, 0},
-		{-3, 3, 0, 0},
-		{1, 0, 0, 0},
-	}
+	t = NewMatrix()
+	t[0][0] = -1
+	t[0][1] = 3
+	t[0][2] = -3
+	t[0][3] = 1
+	t[1][0] = 3
+	t[1][1] = -6
+	t[1][2] = 3
+	t[2][0] = -3
+	t[2][1] = 3
+	t[3][0] = 1
+	return t
 }
 
 // MakeHermite returns a 4x4 matrix that can be used to generate the
 // coefficients for a Hermite curve.
-func MakeHermite [][]float64 {
-	return [][]float64{
-		{2, -2, 1, 1},
-		{-3, 3, -2, -1},
-		{0, 0, 1, 0},
-		{1, 0, 0, 0},
-	}
+func MakeHermite() [][]float64 {
+	 t = NewMatrix()
+	t[0][0] = 2
+	t[0][1] = -3
+	t[0][3] = 1
+	t[1][0] = -2
+	t[1][1] = 3
+	t[2][0] = 1
+	t[2][1] = -2
+	t[2][2] = 1
+	t[3][0] = 1
+	t[3][1] = -1
+	return t
 }
 
 // MultiplyMatrices multiples two matrices and stores it in the second matrix

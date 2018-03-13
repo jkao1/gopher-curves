@@ -20,6 +20,12 @@ The file follows the following format:
   Every command is a single character that takes up a line
   Any command that requires arguments must have those arguments in the 2nd line.
   The commands are as follows:
+    circle: add a circle to the edge matrix -
+	    takes 4 arguments (cx, cy, cz, r)
+  	hermite: add a hermite curve to the edge matrix -
+      takes 8 arguments (x0, y0, x1, y1, rx0, ry0, rx1, ry1)
+	  bezier: add a bezier curve to the edge matrix -
+	    takes 8 arguments (x0, y0, x1, y1, x2, y2, x3, y3)
     line: add a line to the edge matrix -
 	    takes 6 arguemnts (x0, y0, z0, x1, y1, z1)
 	  ident: set the transform matrix to the identity matrix -
@@ -86,7 +92,11 @@ func ParseFile(filename string,
 			draw.AddEdge(edges, FloatParams(params)...)
 		} else if line == "circle" {
 			draw.AddCircle(edges, FloatParams(params)...)
-		} else {
+		} else if line == "hermite" {
+			draw.AddCurve(edges, FloatParams(params)..., line)
+		} else if line == "bezier" {
+			draw.AddCurve(edges, FloatParams(params)..., line)
+		}	else {
 			var stepTransform [][]float64
 
 			if line == "move" {

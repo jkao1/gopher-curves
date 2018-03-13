@@ -1,8 +1,8 @@
 package main
 
 import (
-	"./display"
-	"./parser"
+	"github.com/jkao1/spring-curves/display"
+	"github.com/jkao1/spring-curves/parser"
 )
 
 func main() {
