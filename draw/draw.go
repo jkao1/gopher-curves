@@ -40,30 +40,18 @@ func AddEdge(m [][]float64, params ...float64) {
 
 // AddCircle adds a circle of center (cx, cy, cz) and radius r to an edge
 // matrix.
-func AddCircle(m [][]float64, cx, cy, cz, r float64) {
+func AddCircle(m [][]float64, params ...float64) {
+	cx, cy, _, r := params[0], params[1], params[2], params[3]
 	for t := 0.0; t < 1.0; t += 0.01 {
-		x := r * math.cos(2*math.Pi*t) + cx
-		y := r * math.sin(2*math.Pi*t) + cy
+		x := r * math.Cos(2*math.Pi*t) + cx
+		y := r * math.Sin(2*math.Pi*t) + cy
 		AddPoint(m, x, y, 0)
 	}
 }
 
 // AddCurve adds the curve bounded by the 4 points passed as parameters
 // to an edge matrix.
-func AddCurve(m [][]float64, params ...float64) {
-	x0, y0 := params[0], params[1]
-	x1, y1 := params[2], params[3]
-	x2, y2 := params[4], params[5]
-	x3, y3 := params[6], params[7]
-	step, curveType := params[8], params[9]
-}
-	x0, y0,
-	x1, y1,
-	x2, y2,
-	x3, y3,
-	step float64,
-	curveType string,
-) {
+func AddCurve(m [][]float64, x0, y0, x1, y1, x2, y2, x3, y3, step float64, curveType string) {
 	var coefGenerator [][]float64
 	switch curveType {
 	case "hermite":
@@ -74,28 +62,29 @@ func AddCurve(m [][]float64, params ...float64) {
 		println(`Curve type supplied to AddCurve was not "hermite" or "bezier".`)
 		return
 	}
+	xCoefs, yCoefs := matrix.NewMatrix(4, 4), matrix.NewMatrix(4, 4)
+	copy(xCoefs, coefGenerator)
+	copy(yCoefs, coefGenerator)
+
+	xCoords, yCoords := make([][]float64, 1), make([][]float64, 1)
+	xCoords[0] = []float64{x0, x1, x2, x3}
+	yCoords[0] = []float64{y0, y1, y2, y3}
+
+	matrix.MultiplyMatrices(&xCoords, &xCoefs)
+	matrix.MultiplyMatrices(&yCoords, &yCoefs)
+
 	for t := 0.0; t < 1.0; t += step {
-		xCoefs, yCoefs = matrix.NewMatrix(1, 4), matrix.NewMatrix(1, 4)
-		copy(xCoefs, coefGenerator)
-		copy(yCoefs, coefGenerator)
-
-		xCoords = []float64{x0, x1, x2, x3}
-		yCoords = []float64{y0, y1, y2, y3}
-
-		MultiplyMatrices(&xCoords, &xCoefs)
-		MultiplyMatrices(&yCoords, &yCoefs)
-
 		x := CubicEval(t, xCoefs)
 		y := CubicEval(t, yCoefs)
 
-		AddPoint(m, x, y)
+		AddPoint(m, x, y, 0)
 	}
 }
 
 // CubicEval evaluates a cubic function with variable x and coefficients.
-func CubicEval(x float64, coefs []float64) (y float64) {
-	for i := 3; i >= 0; i-- {
-		y += coefs[3 - i] * math.Pow(x, i)
+func CubicEval(x float64, coefs [][]float64) (y float64) {
+	for i := 3.0; i >= 0.0; i-- {
+		y += coefs[0][int64(3 - i)] * math.Pow(x, i)
 	}
 	return
 }
@@ -203,16 +192,4 @@ func float64ToInt(f float64) int {
 		return int(f)
 	}
 	return int(f + 1)
-}
-
-// AddCircle adds the circle at (x, c, z) with radius r to points.
-func AddCircle(m [][]float64, x, y, z, r float64, step int) {
-	for t = 0; t < step; t++ {
-		n := float64(t) / step
-		AddPoint(
-			float64ToInt(x + math.Cos(2*math.Pi*n)),
-			float64ToInt(y + math.Sin(2*math.Pi*n)),
-			0,
-		)
-	}
 }
