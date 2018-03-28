@@ -1,5 +1,5 @@
-// Package display contains useful functions for the screen
-package display
+// display contains useful functions for the screen
+package main
 
 import (
 	"bytes"
@@ -59,8 +59,8 @@ func WriteScreenToExtension(screen [][][]int, filename string) {
 
 // WriteScreenToPPM takes a screen as an argument and writes it to a PPM file.
 func WriteScreenToPPM(screen [][][]int) {
-	file, err := os.OpenFile(PPMFilename, os.O_CREATE | os.O_WRONLY, 0644)
-	if (err != nil) {
+	file, err := os.OpenFile(PPMFilename, os.O_CREATE|os.O_WRONLY, 0644)
+	if err != nil {
 		panic(err)
 	}
 
